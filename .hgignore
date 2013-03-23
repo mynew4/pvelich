@@ -1,0 +1,5 @@
+build*/
+glob:*rej
+glob:*orig
+glob:*patch
+glob:world_full_trinity_update.sql

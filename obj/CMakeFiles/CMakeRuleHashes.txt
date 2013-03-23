@@ -1,0 +1,21 @@
+# Hashes of file build rules.
+512177d7ed7713e896d2832723182cfd CMakeFiles/uninstall
+6491b5071c5dbc1492f11852bbb09437 src/genrev/CMakeFiles/revision.h
+5c698de5551d9c9169c8b91f32736c89 src/server/authserver/CMakeFiles/pch_Generate_authserver
+d98722c1c5421b07c91469429039e337 src/server/authserver/authPCH.h
+af25e09c34ee0f48e353994859b4f236 src/server/authserver/authPCH.h.gch/authserver_Release.gch
+dab2a1c371d8217a5a2f1ac4ae7329a7 src/server/collision/CMakeFiles/pch_Generate_collision
+30d7ce798a0890e5cb9605962ff477d1 src/server/collision/collisionPCH.h
+3eaab99165895875320fdb7e414bd406 src/server/collision/collisionPCH.h.gch/collision_Release.gch
+1cb307bdb49c46e28f5c59b8f6c6bd49 src/server/game/CMakeFiles/pch_Generate_game
+4603a14ca307a02655ac76402c281e5e src/server/game/gamePCH.h
+0d8db4ecc959e25d1e05e56424e21eb9 src/server/game/gamePCH.h.gch/game_Release.gch
+a8f285f98b250cbcc828f7793e241b0c src/server/scripts/CMakeFiles/pch_Generate_scripts
+c60cca08173b9a3c573b56fcb2caca2e src/server/scripts/ScriptPCH.h
+f98957beba583daeb5fafc5dbe5a8682 src/server/scripts/ScriptPCH.h.gch/scripts_Release.gch
+a88a57633d66aa3d92009b9be867a70d src/server/shared/CMakeFiles/pch_Generate_shared
+b6e2d781ab3fa1ca6d56a487b74430cb src/server/shared/sharedPCH.h
+f4efdfa0d2360de59f1e2872afd53840 src/server/shared/sharedPCH.h.gch/shared_Release.gch
+ab658be8c94a421eeaf060d5e7ac9e5c src/server/worldserver/CMakeFiles/pch_Generate_worldserver
+d9d7aec52af80e41882efdf87a227ecc src/server/worldserver/worldPCH.h
+d5aed8da97f764474e30f10b405bcfeb src/server/worldserver/worldPCH.h.gch/worldserver_Release.gch

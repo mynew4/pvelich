@@ -1,0 +1,4 @@
+/home/fun/pve3/bin/authserver
+/home/fun/pve3/etc/authserver.conf.dist
+/home/fun/pve3/bin/worldserver
+/home/fun/pve3/etc/worldserver.conf.dist
