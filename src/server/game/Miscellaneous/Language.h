@@ -1089,6 +1089,8 @@ enum TrinityStrings
     // Use for custom patches             11000-11999
     LANG_AUTO_BROADCAST                 = 11000,
     LANG_INVALID_REALMID                = 11001,
+    LANG_MODIFIER_ONLINE_CHARACTERS_BROADCAST = 11400,
+    LANG_MODIFIER_ONLINE_CHARACTERS_WHISPER   = 11401,
     VIP_CANT_DO                         = 11002,
     NOT_VIP                             = 11003,
     VIP_COMMAND_DISABLED                = 11004,

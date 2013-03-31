@@ -1253,6 +1253,15 @@ void World::LoadConfigSettings(bool reload)
     m_int_configs[CONFIG_CONFIG_OUTDOORPVP_WINTERGRASP_ANTIFARM_ATK]  = ConfigMgr::GetIntDefault("OutdoorPvP.Wintergrasp.Antifarm.Atk", 5);
     m_int_configs[CONFIG_CONFIG_OUTDOORPVP_WINTERGRASP_ANTIFARM_DEF]  = ConfigMgr::GetIntDefault("OutdoorPvP.Wintergrasp.Antifarm.Def", 5);
     
+
+
+   // modifier online characters
+  m_bool_configs[CONFIG_MODIFIER_ONLINE_CHARACTERS_ENABLE] = ConfigMgr::GetBoolDefault("ModifierOnlineCharacters.Enable", true);
+  m_int_configs[CONFIG_MODIFIER_ONLINE_CHARACTERS_MIN_TIMER] = (ConfigMgr::GetIntDefault("ModifierOnlineCharacters.MinTimer", 60) * MINUTE * IN_MILLISECONDS);
+  m_int_configs[CONFIG_MODIFIER_ONLINE_CHARACTERS_MAX_TIMER] = (ConfigMgr::GetIntDefault("ModifierOnlineCharacters.MaxTimer", 180) * MINUTE * IN_MILLISECONDS);
+  m_int_configs[CONFIG_MODIFIER_ONLINE_CHARACTERS_MIN_MONEY] = ConfigMgr::GetIntDefault("ModifierOnlineCharacters.MinMoney", 100);
+  m_int_configs[CONFIG_MODIFIER_ONLINE_CHARACTERS_MAX_MONEY] = ConfigMgr::GetIntDefault("ModifierOnlineCharacters.MaxMoney", 200);
+ 
     // Management for channels with flag CHANNEL_DBC_FLAG_CITY_ONLY.
 
     m_bool_configs[CONFIG_CHANNEL_ON_CITY_ONLY_FLAG]  = ConfigMgr::GetBoolDefault("Channel.CityOnlyFlag", true);
@@ -1782,7 +1791,8 @@ void World::SetInitialWorldSettings()
     m_timers[WUPDATE_DELETECHARS].SetInterval(DAY*IN_MILLISECONDS); // check for chars to delete every day
 
     m_timers[WUPDATE_PINGDB].SetInterval(getIntConfig(CONFIG_DB_PING_INTERVAL)*MINUTE*IN_MILLISECONDS);    // Mysql ping time in minutes
-
+  uint32 mocInterval = urand(getIntConfig(CONFIG_MODIFIER_ONLINE_CHARACTERS_MIN_TIMER), getIntConfig(CONFIG_MODIFIER_ONLINE_CHARACTERS_MAX_TIMER));
+  m_timers[WUPDATE_MODIFIER_ONLINE_CHARACTERS].SetInterval(mocInterval);
     //to set mailtimer to return mails every day between 4 and 5 am
     //mailtimer is increased when updating auctions
     //one second is 1000 -(tested on win system)
@@ -2157,6 +2167,30 @@ void World::Update(uint32 diff)
         CharacterDatabase.KeepAlive();
         LoginDatabase.KeepAlive();
         WorldDatabase.KeepAlive();
+    }
+    if (m_timers[WUPDATE_MODIFIER_ONLINE_CHARACTERS].Passed())
+    {
+        m_timers[WUPDATE_MODIFIER_ONLINE_CHARACTERS].Reset();
+
+        if (getBoolConfig(CONFIG_MODIFIER_ONLINE_CHARACTERS_ENABLE))
+        {
+            // Send separately because not all players sent.
+            SendWorldText(LANG_MODIFIER_ONLINE_CHARACTERS_BROADCAST);
+
+            for (SessionMap::const_iterator itr = m_sessions.begin(); itr != m_sessions.end(); ++itr)
+            {
+                uint32 sendMoneyCount = urand(getIntConfig(CONFIG_MODIFIER_ONLINE_CHARACTERS_MIN_MONEY), getIntConfig(CONFIG_MODIFIER_ONLINE_CHARACTERS_MAX_MONEY));
+                WorldSession* session = itr->second;
+
+                if (!session || !session->GetPlayer() || !session->GetPlayer()->IsInWorld() || session->GetPlayer()->isAFK())
+                    continue;
+
+                sendMoneyCount = (sendMoneyCount * session->GetPlayer()->getLevel()) / 10;
+
+                session->GetPlayer()->ModifyMoney(sendMoneyCount);
+                ChatHandler(session).PSendSysMessage(LANG_MODIFIER_ONLINE_CHARACTERS_WHISPER, sendMoneyCount); 
+            }
+        }
     }
 
     // update the instance reset times
